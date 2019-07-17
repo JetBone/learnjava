@@ -1,3 +1,4 @@
 # IntelliJ IDEA Project Configuraiton
 *.iml
 .idea/
+target/
