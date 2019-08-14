@@ -13,18 +13,18 @@ public class ContainerSingleton {
     // 使用HashTable确实可以解决多线程问题，但是频繁的加锁解锁会早场大量的资源浪费
     // 使用ConcurrentMap并不能完全解决多线程问题
     // 所以容器单例模式是需要考虑实际业务场景来决定是否使用的
-    private Map<String, Object> singletonMap = new HashMap<>();
+    private static Map<String, Object> singletonMap = new HashMap<>();
 
     private ContainerSingleton() {
     }
 
-    public void setInstance(String name, Object instance) {
+    public static void setInstance(String name, Object instance) {
         if (!singletonMap.containsKey(name)) {
             singletonMap.put(name, instance);
         }
     }
 
-    public Object getInstance(String name) {
+    public static Object getInstance(String name) {
         return singletonMap.get(name);
     }
 }
