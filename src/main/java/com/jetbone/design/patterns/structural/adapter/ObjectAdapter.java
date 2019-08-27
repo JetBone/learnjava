@@ -7,12 +7,12 @@ package com.jetbone.design.patterns.structural.adapter;
 public class ObjectAdapter implements Target {
 
     // 这个应该是让Spring来注入，这里简单进行一下模拟
-    private Adapted adapted = new Adapted();
+    private Adaptee adaptee = new Adaptee();
 
     @Override
     public void request() {
         // 这里可以添加自己想添加的业务功能
-        adapted.AdaptedRequest();
+        adaptee.AdaptedRequest();
         // 这里可以添加自己想添加的业务功能
     }
 }
