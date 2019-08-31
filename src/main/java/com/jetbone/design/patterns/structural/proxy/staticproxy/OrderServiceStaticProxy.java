@@ -25,25 +25,32 @@ public class OrderServiceStaticProxy {
      * @return
      */
     public int saveOrder(Order order) {
-        beforeMethod();
 
-        Long userId = order.getUserId();
+        beforeMethod(order);
+
+        int result = orderService.saveOrder(order);
+
+        afterMethod();
+
+        return result;
+    }
+
+    /**
+     * 在before中进行调用实际业务接口前的操作
+     * @param order
+     */
+    private void beforeMethod(Order order) {
+
+        System.out.println("static proxy, before method");
 
         // 这里模拟分库操作
         // 在静态代理类当中进行分库，然后调用service层的实际业务操作
+        Long userId = order.getUserId();
         int dbRouter = userId.intValue() % 2;
         // 模拟设置DB
         DataSourceContextHolder.setDBType(String.valueOf(dbRouter));
         System.out.println("static proxy delegate to db: " + dbRouter + " to resolve data");
 
-        int result = orderService.saveOrder(order);
-
-        afterMethod();
-        return result;
-    }
-
-    private void beforeMethod() {
-        System.out.println("static proxy, before method");
     }
 
     private void afterMethod() {
