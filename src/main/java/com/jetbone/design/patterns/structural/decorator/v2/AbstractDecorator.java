@@ -20,6 +20,11 @@ public abstract class AbstractDecorator implements IBatterCake {
      */
     public abstract void doSomethings();
 
+    /**
+     * 装饰者模式中的核心
+     * 一种传入类型和返回类型都是被包装的类型的构造器
+     * @param batterCake
+     */
     public AbstractDecorator(IBatterCake batterCake) {
         this.batterCake = batterCake;
     }
