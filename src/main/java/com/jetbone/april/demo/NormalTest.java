@@ -10,11 +10,8 @@ public class NormalTest {
 
 
     public static void main(String[] args) {
-        BigDecimal num1 = new BigDecimal("0.01");
-
-        if (num1.compareTo(BigDecimal.ZERO) == 1) {
-            System.out.println("大");
-        }
+        String str = "adb";
+        System.out.println(str.getBytes());
 
     }
 
