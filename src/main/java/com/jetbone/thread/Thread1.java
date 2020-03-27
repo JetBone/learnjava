@@ -5,16 +5,16 @@ package com.jetbone.thread;
  */
 public class Thread1 implements Runnable {
 
-    private DemoLock demoLock;
+    private DemoLock1 demoLock1;
 
-    public Thread1(DemoLock demoLock) {
-        this.demoLock = demoLock;
+    public Thread1(DemoLock1 demoLock1) {
+        this.demoLock1 = demoLock1;
     }
 
     @Override
     public void run() {
         try {
-            demoLock.print1();
+            demoLock1.print1();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
