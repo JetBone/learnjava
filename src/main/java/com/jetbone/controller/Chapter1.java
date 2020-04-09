@@ -1,5 +1,6 @@
 package com.jetbone.controller;
 
+import com.jetbone.bean.DefaultResult;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,12 +16,12 @@ public class Chapter1 {
 
     @RequestMapping(value = "/world", method = RequestMethod.GET)
     @ResponseBody
-    public HttpServletRequest hello(HttpServletRequest request, HttpServletResponse response) {
+    public DefaultResult hello(HttpServletRequest request, HttpServletResponse response) {
 
         System.out.println(request);
         System.out.println(response);
 
-        return request;
+        return new DefaultResult();
     }
 
 
