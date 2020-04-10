@@ -1,5 +1,6 @@
 package com.jetbone.controller;
 
+import com.jetbone.bean.DefaultQuery;
 import com.jetbone.bean.DefaultResult;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,15 @@ public class Chapter1 {
 
         System.out.println(request);
         System.out.println(response);
+
+        return new DefaultResult();
+    }
+
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    @ResponseBody
+    public DefaultResult test(DefaultQuery query) {
+
+        System.out.println(query.getDate());
 
         return new DefaultResult();
     }
