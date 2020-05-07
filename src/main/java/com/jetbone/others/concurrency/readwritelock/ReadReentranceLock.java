@@ -6,9 +6,10 @@ import java.util.Map;
 /**
  * Created by Chris on 2020/4/30
  *
- * 针对 reentrance 进行优化后的类
+ * 针对 read reentrance 进行优化后的类
+ * 读再获取读
  */
-public class ReadLock {
+public class ReadReentranceLock {
     // 用于保存获得读锁的线程，替代原来的 readers，key 是当前线程实例，value 是重复获取写锁的次数，用来做 reentrance
     private Map<Thread, Integer> readingThreads = new HashMap<Thread, Integer>();
     // 获得写锁的线程数量
@@ -51,10 +52,15 @@ public class ReadLock {
         // 有线程获得写锁
         if (writers > 0) return false;
         // 如果当前线程已经获得了读锁则可以获得读锁，这个要在 writeRequests 前判断
-        if (readingThreads.containsKey(callingThread)) return true;
+        if (isReader(callingThread)) return true;
         // 如果上述两个判断都没通过，才需要判断 writeRequest 数量
         if (writeRequests > 0) return false;
         // 都没判断通过，说明没有人获得写锁，也没有写锁请求，自己也没有获得读锁
         return true;
+    }
+
+    // 判断当前线程是否是reader
+    private boolean isReader(Thread callingThread) {
+        return readingThreads.containsKey(callingThread);
     }
 }

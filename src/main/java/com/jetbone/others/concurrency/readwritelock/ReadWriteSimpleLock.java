@@ -5,7 +5,7 @@ package com.jetbone.others.concurrency.readwritelock;
  *
  * 没有处理 reentrance 问题
  */
-public class ReadWriteLock {
+public class ReadWriteSimpleLock {
 
     // 记录有多少个获取到读锁的数量
     private int readers = 0;
