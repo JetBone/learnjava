@@ -2,6 +2,7 @@ package com.jetbone.others.pdf;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
+import org.apache.poi.ss.usermodel.Cell;
 
 import javax.print.Doc;
 import java.io.File;
@@ -11,7 +12,7 @@ import java.io.FileOutputStream;
 /**
  * Created by Chris on 2020/3/27
  */
-public class PDFDemo {
+public class iTextDemo {
 
     public static void main(String[] args) throws Exception {
 
@@ -60,7 +61,6 @@ public class PDFDemo {
         document.add(new Paragraph("   "));
 
         PdfPTable table = new PdfPTable(6);
-
         table.addCell("123");
         table.addCell("123");
         table.addCell("123");
