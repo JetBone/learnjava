@@ -3,11 +3,11 @@ package com.jetbone.others.common;
 /**
  * Created by Chris on 2019-06-03.
  */
-public class Test {
+public class Test1 {
 
     public static void main(String[] args) {
 
-        Test test = new Test();
+        Test1 test = new Test1();
         ListNode l1 = new ListNode(2);
         l1.next = new ListNode(4);
         l1.next.next = new ListNode(3);
