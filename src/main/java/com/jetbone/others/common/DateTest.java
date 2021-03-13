@@ -27,41 +27,59 @@ public class DateTest {
 //        LocalDate localDate = LocalDate.now();
 //        System.out.println(timeZone.getDisplayName());
 
-        ZoneId zoneId = ZoneId.of("Asia/Shanghai");
-        System.out.println(zoneId);
-
-        DateTest dateTest = new DateTest();
-        Class clazz = dateTest.getClass();
-
-        Field field = clazz.getDeclaredField("dateTime");
-        Method method = clazz.getDeclaredMethod("getDateTime");
-        Object val = method.invoke(dateTest);
-        Instant now = (Instant) val;
-        LocalDateTime localDateTime = LocalDateTime.ofInstant(now, zoneId);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String dateTimeStr = localDateTime.format(formatter);
-
-        System.out.println(now);
-        System.out.println(localDateTime.toString());
-        System.out.println(dateTimeStr);
+//        ZoneId zoneId = ZoneId.of("Asia/Shanghai");
+//        System.out.println(zoneId);
+//
+//        DateTest dateTest = new DateTest();
+//        Class clazz = dateTest.getClass();
+//
+//        Field field = clazz.getDeclaredField("dateTime");
+//        Method method = clazz.getDeclaredMethod("getDateTime");
+//        Object val = method.invoke(dateTest);
+//        Instant now = (Instant) val;
+//        LocalDateTime localDateTime = LocalDateTime.ofInstant(now, zoneId);
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//        String dateTimeStr = localDateTime.format(formatter);
+//
+//        System.out.println(now);
+//        System.out.println(localDateTime.toString());
+//        System.out.println(dateTimeStr);
 
         //===========================
 
         Calendar calendar = Calendar.getInstance();
+//        calendar.set(Calendar.HOUR_OF_DAY, 0);
+//        calendar.set(Calendar.MINUTE, 0);
+//        calendar.set(Calendar.SECOND, 0);
+//        calendar.set(Calendar.MILLISECOND, 0);
+//        calendar.setFirstDayOfWeek(Calendar.MONDAY);
+//        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+//        Date first = calendar.getTime();
+//        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+//        Date second = calendar.getTime();
+//        calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+        calendar.add(Calendar.DATE, -1);
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+        calendar.set(Calendar.MILLISECOND, 999);
+        Date second = calendar.getTime();
+
+        calendar.add(Calendar.DATE, -6);
+//        calendar.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
-        calendar.setFirstDayOfWeek(Calendar.MONDAY);
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         Date first = calendar.getTime();
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-        Date second = calendar.getTime();
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         System.out.println(sdf.format(first));
         System.out.println(sdf.format(second));
+
+
+        //================
 
 
 

@@ -6,7 +6,7 @@ package com.jetbone.others.inherit;
 public class Father extends Man {
     private String hello;
 
-    Father (String hello) {
+    public Father (String hello) {
         this.hello = hello;
         System.out.println("Father(String hello) 构造方法");
     }
