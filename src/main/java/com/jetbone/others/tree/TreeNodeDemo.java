@@ -11,6 +11,8 @@ import java.util.List;
 @Data
 public class TreeNodeDemo implements TreeNode<TreeNodeDemo> {
 
+    private static final long serialVersionUID = 1293523231552212908L;
+
     private Long id;
 
     private Integer sortNo;

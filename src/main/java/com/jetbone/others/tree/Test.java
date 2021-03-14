@@ -75,7 +75,7 @@ public class Test {
 //        }
 
 //        List<TreeNodeDemo> result = TreeUtils.buildTreeWithSort(trees);
-        List<TreeNodeDemo> result = TreeUtils.buildFullPath(trees, 15L, 8L, 25L);
+        List<TreeNodeDemo> result = TreeUtils.buildSubTree(trees, 15L, 8L, 25L);
 
         JSONArray jsonArray = new JSONArray(result);
         System.out.println(jsonArray.toString());

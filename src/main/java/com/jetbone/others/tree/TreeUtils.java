@@ -22,78 +22,104 @@ public class TreeUtils {
 //        return new Trees<>(treeMap, pTreeMap);
 //    }
 
+
+
     /**
      * 将传入的树列表转换为树形结构，并且排序
-     * @param trees 树类列表
-     * @param <T> 实现 TreeNode 的类
-     * @return 最终树形结构
-     */
-    public static <T extends TreeNode<T>> List<T> buildTreeWithSort(List<T> trees) {
-        return buildTree(trees, true);
-    }
-
-    /**
-     * 将传入的树列表转换为树形结构，并且不排序
-     * @param trees 树类列表
-     * @param <T> 实现 TreeNode 的类
-     * @return 最终树形结构
-     */
-    public static <T extends TreeNode<T>> List<T> buildTreeWithoutSort(List<T> trees) {
-        return buildTree(trees, false);
-    }
-
-    /**
-     * 将传入的树列表转换为树形结构，并且不排序
-     * @param trees 树类列表
+     * @param id 最开始构建的顶端ID
      * @param sort 是否需要排序
+     * @param treeNodes 树类列表
      * @param <T> 实现 TreeNode 的类
      * @return 最终树形结构
      */
-    private static <T extends TreeNode<T>> List<T> buildTree(List<T> trees, boolean sort) {
-        Map<Long, List<T>> pTreeMap = trees.stream()
+    public static <T extends TreeNode<T>> List<T> buildTree(Long id, boolean sort, List<T> treeNodes) {
+        Map<Long, T> nodeIdMap = treeNodes.stream().collect(Collectors.toMap(TreeNode::getId, t -> t));
+        Map<Long, List<T>> nodePidMap = treeNodes.stream()
                 .collect(Collectors.groupingBy(t -> t.getPid() == null ? 0L : t.getPid()));
-        long startTime = System.currentTimeMillis();
+        return buildTree(id, sort, nodeIdMap, nodePidMap);
+    }
 
-        List<T> pTree = pTreeMap.get(0L);
+    /**
+     * 将传入的 Map 转换为树形结构，并且不排序
+     * map 一般由外部使用 redis 存储，如果没有存储，可调用 buildTree(List<T> treeNodes, boolean sort) 方法，但是转换会影响效率
+     * @param id 最开始构建的顶端ID
+     * @param sort 是否需要排序
+     * @param nodeIdMap Map, key: ID, value: 节点
+     * @param nodePidMap Map, key: 父ID, value: 相同父ID的树列表
+     * @param <T> 实现 TreeNode 的类
+     * @return 最终树形结构
+     */
+    public static <T extends TreeNode<T>> List<T> buildTree(Long id, boolean sort, Map<Long, T> nodeIdMap, Map<Long, List<T>> nodePidMap) {
 
-        List<T> result = build(pTree, pTreeMap);
+        id = id == null ? 0L : id;
+        T topTreeNode = null;
+        if (id != 0L && nodeIdMap.containsKey(id)) {
+            topTreeNode = nodeIdMap.get(id);
+        }
+        List<T> pTree = nodePidMap.get(id);
+
+        List<T> treeList = build(pTree, nodePidMap);
         if (sort) {
-            sort(result);
+            sort(treeList);
         }
 
-        long endTime = System.currentTimeMillis();
-        System.out.println("Duration: " + (endTime - startTime));
-
-        return result;
+        if (topTreeNode != null) {
+            topTreeNode.setTreeNodes(treeList);
+            return Collections.singletonList(topTreeNode);
+        } else {
+            return treeList;
+        }
     }
 
-    private static <T extends TreeNode<T>> List<T> build(List<T> trees, Map<Long, List<T>> pTreeMap) {
-        for (TreeNode<T> treeNode : trees) {
-            if (pTreeMap.containsKey(treeNode.getId())) {
-                List<T> subTrees = pTreeMap.get(treeNode.getId());
-                treeNode.setTreeNodes(build(subTrees, pTreeMap));
+    /**
+     * 递归构建树
+     * @param treeNodes
+     * @param pTreeNodeMap
+     * @param <T>
+     * @return
+     */
+    private static <T extends TreeNode<T>> List<T> build(List<T> treeNodes, Map<Long, List<T>> pTreeNodeMap) {
+        if (treeNodes != null && !treeNodes.isEmpty()) {
+            for (TreeNode<T> treeNode : treeNodes) {
+                if (pTreeNodeMap.containsKey(treeNode.getId())) {
+                    List<T> subTrees = pTreeNodeMap.get(treeNode.getId());
+                    treeNode.setTreeNodes(build(subTrees, pTreeNodeMap));
+                }
             }
         }
-        return trees;
+        return treeNodes;
     }
 
-    private static <T extends TreeNode<T>> void sort(List<T> trees) {
-        Collections.sort(trees);
-        for (TreeNode<T> treeNode : trees) {
-            if (treeNode.getTreeNodes() != null && !treeNode.getTreeNodes().isEmpty()) {
-                sort(treeNode.getTreeNodes());
-            }
-        }
-    }
-
-    public static <T extends TreeNode<T>> List<T> buildFullPath(List<T> trees, Long... ids) {
+    /**
+     * 构建全路径，只往上找
+     * @param treeNodes 树列表，所有数据
+     * @param ids 需要的全路径的id
+     * @param <T> 树
+     * @return 全路径
+     */
+    public static <T extends TreeNode<T>> List<T> buildSubTree(List<T> treeNodes, Long... ids) {
         if (ids == null || ids.length == 0) {
             return Collections.emptyList();
         }
-        Map<Long, T> treeMap = trees.stream().collect(Collectors.toMap(TreeNode::getId, t -> t));
+        Map<Long, T> nodeIdMap = treeNodes.stream().collect(Collectors.toMap(TreeNode::getId, t -> t));
+
+        return buildSubTree(nodeIdMap, ids);
+    }
+
+    /**
+     * 构建全路径，只往上找
+     * @param treeNodeMap map，一般由外部 redis 缓存起来
+     * @param ids 需要的全路径的id
+     * @param <T> 树
+     * @return 全路径
+     */
+    public static <T extends TreeNode<T>> List<T> buildSubTree(Map<Long, T> treeNodeMap, Long... ids) {
+        if (ids == null || ids.length == 0) {
+            return Collections.emptyList();
+        }
         List<T> subTreeList = new ArrayList<>();
         for (Long id : ids) {
-            T treeNode = buildFullPath(treeMap, id);
+            T treeNode = buildFullPath(treeNodeMap, id);
             if (treeNode != null) {
                 subTreeList.add(treeNode);
             }
@@ -102,26 +128,40 @@ public class TreeUtils {
         return subTreeList;
     }
 
-    private static <T extends TreeNode<T>> T buildFullPath(Map<Long, T> treeMap, Long id) {
+    /**
+     * 构建全路径
+     * @param treeNodeMap map
+     * @param id 父ID
+     * @param <T> 树
+     * @return 全路径
+     */
+    private static <T extends TreeNode<T>> T buildFullPath(Map<Long, T> treeNodeMap, Long id) {
         if (id == null) {
             return null;
         }
 
-        if (treeMap.containsKey(id)) {
-            T treeNode = treeMap.get(id);
-            return findFullPath(treeNode, treeMap);
+        if (treeNodeMap.containsKey(id)) {
+            T treeNode = treeNodeMap.get(id);
+            return findFullPath(treeNode, treeNodeMap);
         } else {
             return null;
         }
 
     }
 
-    private static <T extends TreeNode<T>> T findFullPath(T treeNode, Map<Long, T> treeMap) {
+    /**
+     * 递归向上寻找全路径
+     * @param treeNode 需要寻找上级的节点
+     * @param treeNodeMap key：id，value：树类
+     * @param <T> 树
+     * @return 传入的 node 的全路径
+     */
+    private static <T extends TreeNode<T>> T findFullPath(T treeNode, Map<Long, T> treeNodeMap) {
         if (treeNode.getPid() == null || treeNode.getPid() == 0L) {
             return treeNode;
         }
-        if (treeMap.containsKey(treeNode.getPid())) {
-            T pTreeNode = treeMap.get(treeNode.getPid()).copyMySelf();
+        if (treeNodeMap.containsKey(treeNode.getPid())) {
+            T pTreeNode = treeNodeMap.get(treeNode.getPid()).copyMySelf();
             if (pTreeNode.getTreeNodes() == null || pTreeNode.getTreeNodes().isEmpty()) {
                 List<T> list = new ArrayList<>();
                 list.add(treeNode);
@@ -129,9 +169,25 @@ public class TreeUtils {
             } else {
                 pTreeNode.getTreeNodes().add(treeNode);
             }
-            return findFullPath(pTreeNode, treeMap);
+            return findFullPath(pTreeNode, treeNodeMap);
         } else {
             return treeNode;
+        }
+    }
+
+    /**
+     * 排序
+     * @param treeNodes 树形结构数据
+     * @param <T> 树
+     */
+    private static <T extends TreeNode<T>> void sort(List<T> treeNodes) {
+        if (treeNodes != null && !treeNodes.isEmpty()) {
+            Collections.sort(treeNodes);
+            for (TreeNode<T> treeNode : treeNodes) {
+                if (treeNode.getTreeNodes() != null && !treeNode.getTreeNodes().isEmpty()) {
+                    sort(treeNode.getTreeNodes());
+                }
+            }
         }
     }
 

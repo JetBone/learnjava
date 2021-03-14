@@ -1,0 +1,7 @@
+spring:
+  # redis
+  redis:
+    host: localhost
+
+
+tmp.dir: ~/tmp

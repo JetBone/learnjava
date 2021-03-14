@@ -1,12 +1,13 @@
 package com.jetbone.others.tree;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author Chris
  * @date 2021-03-11
  */
-public interface TreeNode<T extends TreeNode<T>> extends Comparable<TreeNode<T>> {
+public interface TreeNode<T extends TreeNode<T>> extends Comparable<TreeNode<T>>, Serializable {
 
     /**
      * 获取ID
