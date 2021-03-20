@@ -22,6 +22,7 @@ public class Swagger3Config {
     @Bean
     public Docket getApi() {
         return new Docket(DocumentationType.OAS_30)
+                .groupName("API测试")
                 .apiInfo(getApiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.jetbone"))
