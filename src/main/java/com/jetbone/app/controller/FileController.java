@@ -1,13 +1,14 @@
-package com.jetbone.controller;
+package com.jetbone.app.controller;
 
-import com.jetbone.bean.DefaultResult;
+import com.jetbone.app.bean.ApiResult;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,18 +18,20 @@ import java.text.MessageFormat;
 
 /**
  * Created by Chris on 2020/4/9
+ * @author Chris
  */
-@Controller
+@Api(value = "文件", tags = {"文件API"})
+@RestController
 @RequestMapping("/file")
 @RequiredArgsConstructor
-public class FileApi {
+public class FileController {
 
     @Value("${tmp.dir}")
     private String filePath;
 
-    @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    @ResponseBody
-    public DefaultResult uploadFile(MultipartFile file) {
+    @ApiOperation("上传单个文件")
+    @GetMapping(value = "/upload")
+    public ApiResult uploadFile(MultipartFile file) {
 
         System.out.println(filePath);
 
@@ -48,11 +51,11 @@ public class FileApi {
 
         }
 
-        return new DefaultResult();
+        return ApiResult.ok();
     }
 
-    @RequestMapping(value = "/download", method = RequestMethod.GET)
-    @ResponseBody
+    @ApiOperation("下载文件")
+    @GetMapping(value = "/download")
     public ResponseEntity downloadFile() {
 
         String filename = "000";
@@ -65,8 +68,8 @@ public class FileApi {
                 .body(resource);
     }
 
-    @RequestMapping(value = "/download2", method = RequestMethod.GET)
-    @ResponseBody
+    @ApiOperation("下载文件2")
+    @GetMapping(value = "/download2")
     public void downloadFile2(HttpServletResponse response) {
 
         String filename = "000";

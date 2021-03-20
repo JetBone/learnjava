@@ -1,4 +1,4 @@
-package com.jetbone.service;
+package com.jetbone.app.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;

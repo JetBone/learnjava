@@ -1,4 +1,4 @@
-package com.jetbone.april.demo;
+package com.jetbone.app.demo;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

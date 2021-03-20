@@ -1,8 +1,7 @@
-package com.jetbone.bean;
+package com.jetbone.app.bean;
 
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
 

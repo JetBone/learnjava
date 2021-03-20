@@ -1,4 +1,4 @@
-package com.jetbone;
+package com.jetbone.app;
 
 import com.jetbone.others.tree.TreeNode;
 import com.jetbone.others.tree.TreeNodeDemo;
@@ -7,10 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author Chris
