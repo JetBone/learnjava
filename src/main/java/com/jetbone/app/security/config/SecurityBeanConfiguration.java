@@ -22,7 +22,7 @@ import java.util.Collections;
  * @date 2021-03-20
  */
 @Configuration
-public class MySpringConfiguration {
+public class SecurityBeanConfiguration {
 
     @Bean
     public UserDetailsManager userDetailsManager(UserService userService, UserRoleService userRoleService) {

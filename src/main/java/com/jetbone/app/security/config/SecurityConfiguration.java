@@ -16,9 +16,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -30,7 +28,7 @@ import java.util.List;
 @Configuration
 @ConditionalOnClass(WebSecurityConfigurerAdapter.class)
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-public class MySpringSecurityConfiguration {
+public class SecurityConfiguration {
 
     @Bean
     public UsernameAndPasswordJsonLoginProcessor jsonLoginProcessor() {
@@ -49,6 +47,8 @@ public class MySpringSecurityConfiguration {
 
         MyLoginFilter loginFilter = new MyLoginFilter(loginProcessors, userDetailsService);
         loginFilter.setAuthenticationManager(authenticationManager);
+        loginFilter.setAuthenticationSuccessHandler(new ForwardAuthenticationSuccessHandler("/login/success"));
+        loginFilter.setAuthenticationFailureHandler(new ForwardAuthenticationFailureHandler("/login/failure"));
         return loginFilter;
     }
 
@@ -85,11 +85,7 @@ public class MySpringSecurityConfiguration {
 //                    .antMatchers("/*/api-docs").permitAll()
                     .anyRequest().authenticated()
                     .and()
-                    .addFilterBefore(myLoginFilter, UsernamePasswordAuthenticationFilter.class)
-                    .formLogin()
-                    .loginProcessingUrl("/process")
-                    .successForwardUrl("/login/success")
-                    .failureForwardUrl("/login/failure");
+                    .addFilterBefore(myLoginFilter, UsernamePasswordAuthenticationFilter.class);
         }
     }
 

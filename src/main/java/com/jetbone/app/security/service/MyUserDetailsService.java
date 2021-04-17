@@ -99,7 +99,7 @@ public class MyUserDetailsService implements UserDetailsManager {
             User.UserBuilder userBuilder = User.builder()
                     .username(username)
                     .password("{noop}" + myUserDetails.getPassword());
-            if (CollectionUtils.isEmpty(userRoleList)) {
+            if (!CollectionUtils.isEmpty(userRoleList)) {
                 userBuilder.authorities(buildAuthorities(userRoleList));
             } else {
                 userBuilder.authorities(AuthorityUtils.NO_AUTHORITIES);
