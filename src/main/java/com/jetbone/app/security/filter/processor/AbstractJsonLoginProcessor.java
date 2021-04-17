@@ -1,7 +1,7 @@
 package com.jetbone.app.security.filter.processor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jetbone.app.security.LoginBody;
+import com.jetbone.app.security.authentication.LoginBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

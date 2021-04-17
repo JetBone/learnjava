@@ -78,6 +78,8 @@ public class SecurityConfiguration {
                     .authorizeRequests()
                     // 登陆接口
                     .antMatchers("/login/captcha/**").permitAll()
+                    // 登出接口
+                    .antMatchers("/logout/**").permitAll()
                     // swagger 文档
 //                    .antMatchers("/swagger-ui/**").permitAll()
 //                    .antMatchers("/swagger-resources/**").permitAll()
@@ -85,7 +87,9 @@ public class SecurityConfiguration {
 //                    .antMatchers("/*/api-docs").permitAll()
                     .anyRequest().authenticated()
                     .and()
-                    .addFilterBefore(myLoginFilter, UsernamePasswordAuthenticationFilter.class);
+                    .addFilterBefore(myLoginFilter, UsernamePasswordAuthenticationFilter.class)
+                    .logout()
+                    .logoutSuccessUrl("/logout/success");
         }
     }
 

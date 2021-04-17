@@ -1,4 +1,4 @@
-package com.jetbone.app.security;
+package com.jetbone.app.security.authentication;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;

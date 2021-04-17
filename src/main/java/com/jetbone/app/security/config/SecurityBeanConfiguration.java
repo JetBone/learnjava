@@ -1,6 +1,6 @@
 package com.jetbone.app.security.config;
 
-import com.jetbone.app.security.CaptchaAuthenticationProvider;
+import com.jetbone.app.security.authentication.CaptchaAuthenticationProvider;
 import com.jetbone.app.security.service.CaptchaService;
 import com.jetbone.app.security.service.MyUserDetailsService;
 import com.jetbone.app.service.UserRoleService;
@@ -9,12 +9,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.UserDetailsManager;
 
-import javax.annotation.Resource;
 import java.util.Collections;
 
 /**

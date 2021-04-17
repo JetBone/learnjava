@@ -1,6 +1,6 @@
 package com.jetbone.app.security.filter.processor;
 
-import com.jetbone.app.security.LoginBody;
+import com.jetbone.app.security.authentication.LoginBody;
 import org.springframework.security.core.Authentication;
 
 import javax.servlet.http.HttpServletRequest;

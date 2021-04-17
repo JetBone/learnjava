@@ -20,12 +20,23 @@ import springfox.documentation.spring.web.plugins.Docket;
 public class Swagger3Config {
 
     @Bean
-    public Docket getApi() {
+    public Docket testApi() {
         return new Docket(DocumentationType.OAS_30)
                 .groupName("API测试")
                 .apiInfo(getApiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.jetbone"))
+                .apis(RequestHandlerSelectors.basePackage("com.jetbone.app.controller"))
+                .paths(PathSelectors.any())
+                .build();
+    }
+
+    @Bean
+    public Docket loginApi() {
+        return new Docket(DocumentationType.OAS_30)
+                .groupName("登陆API")
+                .apiInfo(getApiInfo())
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.jetbone.app.security.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }

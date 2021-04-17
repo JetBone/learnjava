@@ -1,7 +1,6 @@
-package com.jetbone.app.security;
+package com.jetbone.app.security.authentication;
 
 import com.jetbone.app.security.service.CaptchaService;
-import com.jetbone.app.security.service.MyUserDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;

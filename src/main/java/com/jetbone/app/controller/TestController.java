@@ -21,21 +21,21 @@ public class TestController {
 
     @ApiOperation("hello world")
     @RequestMapping(value = "/world", method = RequestMethod.GET)
-    public ApiResult<Object> hello(HttpServletRequest request, HttpServletResponse response) {
+    public ApiResult<String> hello(HttpServletRequest request, HttpServletResponse response) {
 
         System.out.println(request);
         System.out.println(response);
 
-        return ApiResult.ok();
+        return ApiResult.ok("hello");
     }
 
     @ApiOperation("测试")
     @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public ApiResult<Object> test(DefaultQuery query) {
+    public ApiResult<String> test(DefaultQuery query) {
 
         System.out.println(query.getDate());
 
-        return ApiResult.ok();
+        return ApiResult.ok("测试成功");
     }
 
 

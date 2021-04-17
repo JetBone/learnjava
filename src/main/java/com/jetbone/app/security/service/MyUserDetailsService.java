@@ -106,7 +106,7 @@ public class MyUserDetailsService implements UserDetailsManager {
             }
             UserDetails user = userBuilder.build();
 
-            USERS.put(username, user);
+//            USERS.put(username, user);
 
             return user;
         }
