@@ -1,10 +1,8 @@
 package com.jetbone.app.security.service;
 
-import cn.hutool.core.util.RandomUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.poi.util.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -19,7 +17,7 @@ import java.util.Random;
 @Service
 public class CaptchaService {
 
-    private static final Log logger = LogFactory.getLog(CaptchaService.class);
+    private static final Logger logger = LoggerFactory.getLogger(CaptchaService.class);
 
     private static final String CAPTCHA = "captcha";
 
@@ -31,7 +29,7 @@ public class CaptchaService {
             return false;
         }
 
-        if (captcha.equals(code)) {
+        if (!captcha.equals(code)) {
             logger.info("验证码错误");
             return false;
         }
@@ -48,6 +46,7 @@ public class CaptchaService {
         // 获取手机验证码
         String captcha = putCaptcha(phone);
         // TODO 发送
+        logger.info("[CAPTCHA] TODO - 发送手机：" + phone + " ，验证码：" +  captcha);
 
         return captcha;
     }
@@ -60,7 +59,9 @@ public class CaptchaService {
     @CachePut(cacheNames = CAPTCHA, key = "#phone")
     public String putCaptcha(String phone) {
         int randInt = (int) ((Math.random()*9+1)*100000);
-        return String.valueOf(randInt);
+        String captcha = String.valueOf(randInt);
+        logger.info("[CAPTCHA] - 获取手机：" + phone + " ，验证码：" +  captcha);
+        return captcha;
     }
 
     /**
@@ -70,7 +71,7 @@ public class CaptchaService {
      */
     @Cacheable(cacheNames = CAPTCHA, key = "#phone")
     public String getCaptcha(String phone) {
-        return null;
+        return "123456";
     }
 
     /**
@@ -79,6 +80,5 @@ public class CaptchaService {
      */
     @CacheEvict(cacheNames = CAPTCHA, key = "#phone")
     public void expireCaptcha(String phone) {
-
     }
 }

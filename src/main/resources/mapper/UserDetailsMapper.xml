@@ -27,4 +27,13 @@
       id = #{id}
     </where>
   </select>
+
+  <select id="findByUsername" parameterType="java.lang.String" resultMap="userDetailsResultMap">
+    select
+    <include refid="allColumns" />
+    from user
+    <where>
+      username = #{username}
+    </where>
+  </select>
 </mapper>

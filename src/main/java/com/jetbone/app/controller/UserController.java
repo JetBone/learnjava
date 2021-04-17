@@ -33,4 +33,10 @@ public class UserController {
     public ApiResult<MyUserDetails> getUserById(@PathVariable Long userId) {
         return ApiResult.ok(userService.findByUserId(userId));
     }
+
+    @ApiOperation("获取用户")
+    @GetMapping(value = "/username/{username}")
+    public ApiResult<MyUserDetails> getUserById(@PathVariable String username) {
+        return ApiResult.ok(userService.findByUsername(username));
+    }
 }

@@ -1,18 +1,21 @@
 package com.jetbone.app.security.filter;
 
+import com.jetbone.app.security.filter.processor.LoginProcessor;
+import com.jetbone.app.security.filter.processor.UsernameAndPasswordJsonLoginProcessor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
-import org.springframework.web.filter.GenericFilterBean;
 
-import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -24,7 +27,7 @@ import java.util.Optional;
  * @author Chris
  * @date 2021-03-21
  */
-public class MyLoginFilter extends GenericFilterBean {
+public class MyLoginFilter extends AbstractAuthenticationProcessingFilter {
 
     private static final Log logger = LogFactory.getLog(MyLoginFilter.class);
 
@@ -34,30 +37,33 @@ public class MyLoginFilter extends GenericFilterBean {
 
     private final AuthenticationEntryPoint authenticationEntryPoint = new Http403ForbiddenEntryPoint();
 
-    public MyLoginFilter(List<LoginProcessor> loginProcessors) {
+    private final UserDetailsService userDetailsService;
+
+    public MyLoginFilter(List<LoginProcessor> loginProcessors, UserDetailsService userDetailsService) {
+        super(REQUEST_MATCHER);
         if (loginProcessors == null || loginProcessors.size() == 0) {
             this.loginProcessors.add(defaultLoginProcessor());
         } else {
             this.loginProcessors.addAll(loginProcessors);
         }
+        this.userDetailsService = userDetailsService;
     }
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        HttpServletRequest request = (HttpServletRequest) servletRequest;
-        HttpServletResponse response = (HttpServletResponse) servletResponse;
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
         if (REQUEST_MATCHER.matches(request)) {
             Optional<LoginProcessor> loginProcessorOptional = loginProcessors.stream().filter(t -> t.isSupport(request)).findFirst();
             if (loginProcessorOptional.isEmpty()) {
                 logger.info("不支持的登录方式");
             } else {
-                loginProcessorOptional.get().process(request, response);
+                return loginProcessorOptional.get().process(request, response);
             }
         }
-        filterChain.doFilter(servletRequest, servletResponse);
+
+        return null;
     }
 
     private LoginProcessor defaultLoginProcessor() {
-        return new FormLoginProcessor();
+        return new UsernameAndPasswordJsonLoginProcessor();
     }
 }

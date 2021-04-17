@@ -1,11 +1,11 @@
 package com.jetbone.app.security.controller;
 
 import com.jetbone.app.bean.ApiResult;
+import com.jetbone.app.security.service.CaptchaService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Chris
@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/login")
+@RequiredArgsConstructor
 public class LoginController {
 
+    private final CaptchaService captchaService;
 
     @PostMapping("success")
     public ApiResult<UserDetails> loginSuccessful() {
@@ -27,5 +29,10 @@ public class LoginController {
     @PostMapping("failure")
     public ApiResult<String> loginFailure() {
         return ApiResult.ok("认证失败");
+    }
+
+    @GetMapping("/captcha/{phone}")
+    public ApiResult<String> sendCaptcha(@PathVariable String phone) {
+        return ApiResult.ok(captchaService.sendCaptcha(phone));
     }
 }

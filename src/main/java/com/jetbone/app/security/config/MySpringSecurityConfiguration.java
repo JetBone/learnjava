@@ -1,8 +1,8 @@
 package com.jetbone.app.security.config;
 
-import com.jetbone.app.security.filter.FormLoginProcessor;
-import com.jetbone.app.security.filter.JsonLoginProcessor;
-import com.jetbone.app.security.filter.LoginProcessor;
+import com.jetbone.app.security.filter.processor.CaptchaLoginProcessor;
+import com.jetbone.app.security.filter.processor.UsernameAndPasswordJsonLoginProcessor;
+import com.jetbone.app.security.filter.processor.LoginProcessor;
 import com.jetbone.app.security.filter.MyLoginFilter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -10,14 +10,17 @@ import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.annotation.Resource;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -30,18 +33,23 @@ import java.util.List;
 public class MySpringSecurityConfiguration {
 
     @Bean
-    public FormLoginProcessor formLoginProcessor() {
-        return new FormLoginProcessor();
+    public UsernameAndPasswordJsonLoginProcessor jsonLoginProcessor() {
+        return new UsernameAndPasswordJsonLoginProcessor();
     }
 
     @Bean
-    public JsonLoginProcessor jsonLoginProcessor() {
-        return new JsonLoginProcessor();
+    public CaptchaLoginProcessor captchaMyLoginAuthentication(AuthenticationManager authenticationManager) {
+        return new CaptchaLoginProcessor(authenticationManager);
     }
 
     @Bean
-    public MyLoginFilter myLoginFilter(List<LoginProcessor> loginProcessors) {
-        return new MyLoginFilter(loginProcessors);
+    public MyLoginFilter myLoginFilter(List<LoginProcessor> loginProcessors,
+                                       UserDetailsService userDetailsService,
+                                       AuthenticationManager authenticationManager) {
+
+        MyLoginFilter loginFilter = new MyLoginFilter(loginProcessors, userDetailsService);
+        loginFilter.setAuthenticationManager(authenticationManager);
+        return loginFilter;
     }
 
     @Configuration
@@ -65,14 +73,23 @@ public class MySpringSecurityConfiguration {
         protected void configure(HttpSecurity http) throws Exception {
             http
                     .csrf().disable()
+                    .cors()
+                    .and()
                     .authorizeRequests()
+                    // 登陆接口
+                    .antMatchers("/login/captcha/**").permitAll()
+                    // swagger 文档
+//                    .antMatchers("/swagger-ui/**").permitAll()
+//                    .antMatchers("/swagger-resources/**").permitAll()
+//                    .antMatchers("/webjars/**").permitAll()
+//                    .antMatchers("/*/api-docs").permitAll()
                     .anyRequest().authenticated()
                     .and()
                     .addFilterBefore(myLoginFilter, UsernamePasswordAuthenticationFilter.class)
                     .formLogin()
-                    .loginProcessingUrl("/process");
-//                    .successForwardUrl("/login/success")
-//                    .failureForwardUrl("/login/failure");
+                    .loginProcessingUrl("/process")
+                    .successForwardUrl("/login/success")
+                    .failureForwardUrl("/login/failure");
         }
     }
 

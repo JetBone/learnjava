@@ -13,7 +13,7 @@ import org.springframework.cache.annotation.EnableCaching;
 @SpringBootApplication
 public class App {
 
-	public static final Logger logger = LoggerFactory.getLogger("App.class");
+	public static final Logger logger = LoggerFactory.getLogger(App.class);
 
 	public static void main(String[] args) {
 		logger.info("start:!!!!!");

@@ -1,4 +1,4 @@
-package com.jetbone.app.security.filter;
+package com.jetbone.app.security.filter.processor;
 
 import javax.servlet.http.HttpServletRequest;
 

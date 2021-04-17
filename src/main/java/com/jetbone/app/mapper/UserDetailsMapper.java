@@ -14,17 +14,21 @@ public interface UserDetailsMapper {
 
     /**
      * 获取所有用户信息
-     * @return
+     * @return 用户信息
      */
     List<MyUserDetails> selectAll();
 
     /**
      * 根据用户ID获取信息
      * @param userId 用户ID
-     * @return
+     * @return 用户信息
      */
     MyUserDetails findByUserId(Long userId);
 
-
-
+    /**
+     * 根据用户ID获取信息
+     * @param username 用户名称
+     * @return 用户信息
+     */
+    MyUserDetails findByUsername(String username);
 }

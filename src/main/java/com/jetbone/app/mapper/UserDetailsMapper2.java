@@ -16,7 +16,7 @@ public interface UserDetailsMapper2 {
 
     /**
      * 获取所有用户信息
-     * @return
+     * @return 用户信息
      */
     @SelectProvider(value = SqlBuilder.class, method = "selectAll")
     List<MyUserDetails> selectAll();
@@ -24,10 +24,18 @@ public interface UserDetailsMapper2 {
     /**
      * 根据用户ID获取信息
      * @param userId 用户ID
-     * @return
+     * @return 用户信息
      */
     @SelectProvider(value = SqlBuilder.class, method = "findByUserId")
     MyUserDetails findByUserId(Long userId);
+
+    /**
+     * 根据用户ID获取信息
+     * @param username 用户名称
+     * @return 用户信息
+     */
+    @SelectProvider(value = SqlBuilder.class, method = "findByUsername")
+    MyUserDetails findByUsername(String username);
 
     class SqlBuilder extends SQL {
 
@@ -48,6 +56,14 @@ public interface UserDetailsMapper2 {
             selectAllColumns();
             FROM("user");
             WHERE("id = #{userId}");
+
+            return toString();
+        }
+
+        public String findByUsername(String username) {
+            selectAllColumns();
+            FROM("user");
+            WHERE("username = #{username}");
 
             return toString();
         }

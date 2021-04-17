@@ -23,13 +23,18 @@ public class UserService {
     private final UserDetailsMapper2 userDetailsMapper;
 
     public List<MyUserDetails> selectAll() {
-        logger.info("[Method] select all");
+        logger.info("[USER_SERVICE] select all");
         return userDetailsMapper.selectAll();
     }
 
     public MyUserDetails findByUserId(Long userId) {
-        logger.info("[Method] findByUserId");
+        logger.info("[USER_SERVICE] findByUserId, userId:" + userId);
         return userDetailsMapper.findByUserId(userId);
+    }
+
+    public MyUserDetails findByUsername(String username) {
+        logger.info("[USER_SERVICE] findByUsername, username:" + username);
+        return userDetailsMapper.findByUsername(username);
     }
 
 }

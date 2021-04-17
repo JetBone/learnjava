@@ -1,4 +1,7 @@
-package com.jetbone.app.security.filter;
+package com.jetbone.app.security.filter.processor;
+
+import com.jetbone.app.security.LoginBody;
+import org.springframework.security.core.Authentication;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,25 +21,19 @@ public interface LoginProcessor {
     LoginType getLoginType();
 
     /**
-     * 获取用户名
-     * @param request
-     * @return
-     */
-    String getUsername(HttpServletRequest request);
-
-    /**
-     * 获取密码
-     * @param request
-     * @return
-     */
-    String getPassword(HttpServletRequest request);
-
-    /**
      * 执行操作
      * @param request
      * @param response
+     * @return
      */
-    void process(HttpServletRequest request, HttpServletResponse response);
+    Authentication process(HttpServletRequest request, HttpServletResponse response);
+
+    /**
+     * 解析登陆信息
+     * @param request request
+     * @return 登陆信息
+     */
+    LoginBody getLoginBody(HttpServletRequest request);
 
     /**
      * 登录方式
@@ -51,7 +48,12 @@ public interface LoginProcessor {
         /**
          * JSON body
          */
-        JSON
+        JSON_U_P,
+
+        /**
+         * captcha
+         */
+        JSON_CAPTCHA,
         ;
     }
 

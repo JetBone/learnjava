@@ -36,6 +36,8 @@ public class RedisTest {
 //        redisTemplate.opsForValue().set("TREE", result);
         Map<Long, List<TreeNodeDemo>> result =  getValues();
 
+        redisTemplate.opsForValue().set("key", "value test");
+
 //        System.out.println(value);
         System.out.println("############ END ############");
     }
