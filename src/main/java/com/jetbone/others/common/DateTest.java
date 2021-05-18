@@ -6,8 +6,11 @@ import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.TemporalAccessor;
+import java.time.temporal.TemporalQuery;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.function.Function;
 import java.util.regex.Pattern;
 
 import static java.time.format.DateTimeFormatter.*;
@@ -105,30 +108,36 @@ public class DateTest {
 //        LocalDate date = LocalDate.parse(dateStr, ISO_LOCAL_DATE);
 //        LocalDateTime dateTime = LocalDateTime.of(date, LocalTime.of(0,0, 0, 0));
 
-        LocalDate dateTime1 = LocalDate.parse(dateStr1, new DateTimeFormatterBuilder()
-                .parseCaseInsensitive()
-                .append(ISO_LOCAL_DATE)
-                .toFormatter());
-
-        LocalDateTime dateTime2 = LocalDateTime.parse(dateStr2, new DateTimeFormatterBuilder()
-                .parseCaseInsensitive()
-                .append(ISO_LOCAL_DATE)
-                .appendLiteral(' ')
-                .append(ISO_LOCAL_TIME)
-                .toFormatter());
+//        LocalDate dateTime1 = LocalDate.parse(dateStr1, new DateTimeFormatterBuilder()
+//                .parseCaseInsensitive()
+//                .append(ISO_LOCAL_DATE)
+//                .toFormatter());
+//
+//        LocalDateTime dateTime2 = LocalDateTime.parse(dateStr2, new DateTimeFormatterBuilder()
+//                .parseCaseInsensitive()
+//                .append(ISO_LOCAL_DATE)
+//                .appendLiteral(' ')
+//                .append(ISO_LOCAL_TIME)
+//                .toFormatter());
 
         LocalDateTime dateTime3 = LocalDateTime.parse(dateStr3, ISO_LOCAL_DATE_TIME);
 
-        Instant dateTime4 = Instant.parse(dateStr4);
+        TemporalQuery temporalQuery = LocalDateTime::from;
+        TemporalQuery temporalQuery2 = a -> a;
+        Function x = a -> a;
 
-        Instant dateTime5 = Instant.parse(dateStr5);
+//        ISO_LOCAL_DATE_TIME.parse(dateStr3, temporalQuery2);
 
-
-        System.out.println(dateTime1);
-        System.out.println(dateTime2);
-        System.out.println(dateTime3);
-        System.out.println(dateTime4);
-        System.out.println(dateTime5);
+//        Instant dateTime4 = Instant.parse(dateStr4);
+//
+//        Instant dateTime5 = Instant.parse(dateStr5);
+//
+//
+//        System.out.println(dateTime1);
+//        System.out.println(dateTime2);
+//        System.out.println(dateTime3);
+//        System.out.println(dateTime4);
+//        System.out.println(dateTime5);
 
 
 
