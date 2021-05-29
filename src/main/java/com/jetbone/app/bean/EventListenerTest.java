@@ -44,7 +44,7 @@ public class EventListenerTest {
     public ApplicationListener<ApplicationStartedEvent> listener() {
         return new ApplicationListener<ApplicationStartedEvent>() {
             @Override
-//            @Order(17)
+            @Order(17)
             public void onApplicationEvent(ApplicationStartedEvent event) {
                 log.info("inner eventTest order 17");
             }

@@ -43,11 +43,13 @@ public class SecurityConfiguration {
     @Bean
     public MyLoginFilter myLoginFilter(List<LoginProcessor> loginProcessors,
                                        UserDetailsService userDetailsService,
-                                       AuthenticationManager authenticationManager) {
+                                       AuthenticationManager authenticationManager,
+                                       AuthenticationSuccessHandler authenticationSuccessHandler) {
 
         MyLoginFilter loginFilter = new MyLoginFilter(loginProcessors, userDetailsService);
         loginFilter.setAuthenticationManager(authenticationManager);
-        loginFilter.setAuthenticationSuccessHandler(new ForwardAuthenticationSuccessHandler("/login/success"));
+        loginFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
+//        loginFilter.setAuthenticationSuccessHandler(new ForwardAuthenticationSuccessHandler("/login/success"));
         loginFilter.setAuthenticationFailureHandler(new ForwardAuthenticationFailureHandler("/login/failure"));
         return loginFilter;
     }
@@ -88,6 +90,8 @@ public class SecurityConfiguration {
                     .anyRequest().authenticated()
                     .and()
                     .addFilterBefore(myLoginFilter, UsernamePasswordAuthenticationFilter.class)
+//                    .formLogin()
+//                    .and()
                     .logout()
                     .logoutSuccessUrl("/logout/success");
         }

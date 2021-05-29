@@ -1,5 +1,6 @@
 package com.jetbone.app.mapper;
 
+import com.jetbone.app.controller.param.UserSaveParam;
 import com.jetbone.app.entity.MyUserDetails;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.SelectProvider;
@@ -37,6 +38,28 @@ public interface UserDetailsMapper2 {
     @SelectProvider(value = SqlBuilder.class, method = "findByUsername")
     MyUserDetails findByUsername(String username);
 
+    /**
+     * 根据用户ID获取信息
+     * @param param 用户信息
+     * @return 用户信息
+     */
+    @SelectProvider(value = SqlBuilder.class, method = "createUser")
+    Long createUser(UserSaveParam param);
+
+    /**
+     * 根据用户名删除用户
+     * @param username 用户名
+     */
+    @SelectProvider(value = SqlBuilder.class, method = "deleteUserByUsername")
+    void deleteUserByUsername(String username);
+
+    /**
+     * 根据用户ID删除用户
+     * @param userId 用户ID
+     */
+    @SelectProvider(value = SqlBuilder.class, method = "deleteUserById")
+    void deleteUserByUserId(Long userId);
+
     class SqlBuilder extends SQL {
 
         private void selectAllColumns() {
@@ -64,6 +87,28 @@ public interface UserDetailsMapper2 {
             selectAllColumns();
             FROM("user");
             WHERE("username = #{username}");
+
+            return toString();
+        }
+
+        public String createUser(UserSaveParam param) {
+            INSERT_INTO("user");
+            VALUES("username", "#{username}");
+            VALUES("password", "#{password}");
+
+            return toString();
+        }
+
+        public String deleteUserByUsername(String username) {
+            DELETE_FROM("user");
+            WHERE("username = #{username}");
+
+            return toString();
+        }
+
+        public String deleteUserById(Long userId) {
+            DELETE_FROM("user");
+            WHERE("id = #{userId}");
 
             return toString();
         }

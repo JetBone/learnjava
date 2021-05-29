@@ -1,6 +1,7 @@
 package com.jetbone.app.controller;
 
 import com.jetbone.app.bean.ApiResult;
+import com.jetbone.app.controller.param.UserSaveParam;
 import com.jetbone.app.entity.MyUserDetails;
 import com.jetbone.app.service.UserService;
 import io.swagger.annotations.Api;
@@ -38,5 +39,29 @@ public class UserController {
     @GetMapping(value = "/username/{username}")
     public ApiResult<MyUserDetails> getUserById(@PathVariable String username) {
         return ApiResult.ok(userService.findByUsername(username));
+    }
+
+    @ApiOperation("创建用户")
+    @PostMapping("/create")
+    public ApiResult<Object> createUser(@RequestBody UserSaveParam param) {
+        Long id = userService.createUser(param);
+
+        return ApiResult.ok(id);
+    }
+
+    @ApiOperation("根据用户名删除用户")
+    @DeleteMapping("/delete/username/{username}")
+    public ApiResult<Object> deleteUserByUsername(@PathVariable String username) {
+        userService.deleteUserByUsername(username);
+
+        return ApiResult.ok();
+    }
+
+    @ApiOperation("根据用户名删除用户")
+    @DeleteMapping("/delete/id/{userId}")
+    public ApiResult<Object> deleteUserByUsername(@PathVariable Long userId) {
+        userService.deleteUserByUserId(userId);
+
+        return ApiResult.ok();
     }
 }

@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,29 +88,29 @@ public class MyUserDetailsService implements UserDetailsManager {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        if (USERS.containsKey(username)) {
-            return USERS.get(username);
-        } else {
+//        if (USERS.containsKey(username)) {
+//            return USERS.get(username);
+//        } else {
             MyUserDetails myUserDetails = userService.findByUsername(username);
             if (myUserDetails == null) {
                 throw new UsernameNotFoundException("user " + username + " does not exists.");
             }
             List<UserRole> userRoleList = userRoleService.findUserRolesByUsername(username);
 
-            User.UserBuilder userBuilder = User.builder()
-                    .username(username)
-                    .password("{noop}" + myUserDetails.getPassword());
+//            User.UserBuilder userBuilder = User.builder()
+//                    .username(username)
+//                    .password(myUserDetails.getPassword());
             if (!CollectionUtils.isEmpty(userRoleList)) {
-                userBuilder.authorities(buildAuthorities(userRoleList));
+                myUserDetails.setAuthorities(buildAuthorities(userRoleList));
             } else {
-                userBuilder.authorities(AuthorityUtils.NO_AUTHORITIES);
+                myUserDetails.setAuthorities(Collections.emptyList());
             }
-            UserDetails user = userBuilder.build();
+//            UserDetails user = userBuilder.build();
 
 //            USERS.put(username, user);
 
-            return user;
-        }
+            return myUserDetails;
+//        }
     }
 
     private List<SimpleGrantedAuthority> buildAuthorities(List<UserRole> userRoleList) {
