@@ -21,6 +21,9 @@ public class ApiResult<T> {
 
     private T data;
 
+    public ApiResult() {
+    }
+
     private ApiResult(int code, String message) {
         this.code = code;
         this.message = message;
@@ -40,4 +43,12 @@ public class ApiResult<T> {
         return OK;
     }
 
+    @Override
+    public String toString() {
+        return "ApiResult{" +
+                "code=" + code +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                '}';
+    }
 }
