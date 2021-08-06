@@ -87,7 +87,7 @@ public class SecurityConfiguration {
 //                    .antMatchers("/swagger-resources/**").permitAll()
 //                    .antMatchers("/webjars/**").permitAll()
 //                    .antMatchers("/*/api-docs").permitAll()
-                    .anyRequest().authenticated()
+                    .anyRequest().permitAll()
                     .and()
                     .addFilterBefore(myLoginFilter, UsernamePasswordAuthenticationFilter.class)
 //                    .formLogin()

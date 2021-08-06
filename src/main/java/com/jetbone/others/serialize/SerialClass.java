@@ -1,5 +1,6 @@
 package com.jetbone.others.serialize;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
@@ -7,6 +8,7 @@ import lombok.Data;
  * @date 2021-06-22
  */
 @Data
+//@AllArgsConstructor
 public class SerialClass implements SerialInterface {
 
     private static final long serialVersionUID = 550308139021124769L;

@@ -1,9 +1,8 @@
 package com.jetbone.app.config;
 
-import org.springframework.cache.CacheManager;
-import org.springframework.context.annotation.Bean;
+import com.jetbone.app.service.CustomKeyGenerator;
+import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.cache.RedisCacheManager;
 
 /**
  * @author Chris

@@ -30,7 +30,7 @@ public class FileController {
     private String filePath;
 
     @ApiOperation("上传单个文件")
-    @GetMapping(value = "/upload")
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResult uploadFile(MultipartFile file) {
 
         System.out.println(filePath);
@@ -41,12 +41,12 @@ public class FileController {
             System.out.println(originalFileName);
             System.out.println(fileName);
 
-            try {
-                File dest = new File(MessageFormat.format("{0}/{1}", filePath, originalFileName));
-                file.transferTo(dest);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                File dest = new File(MessageFormat.format("{0}/{1}", filePath, originalFileName));
+//                file.transferTo(dest);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
 
 
         }

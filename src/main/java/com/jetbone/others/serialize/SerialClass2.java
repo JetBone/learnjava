@@ -1,5 +1,7 @@
 package com.jetbone.others.serialize;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
