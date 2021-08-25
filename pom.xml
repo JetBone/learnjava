@@ -147,6 +147,13 @@
       <version>3.4.1</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/com.alibaba/hessian-lite -->
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>hessian-lite</artifactId>
+      <version>3.2.11</version>
+    </dependency>
+
     <!-- https://mvnrepository.com/artifact/com.esotericsoftware/kryo -->
     <dependency>
       <groupId>com.esotericsoftware</groupId>
