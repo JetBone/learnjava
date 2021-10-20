@@ -13,16 +13,16 @@ public class NormalTest {
 
     public static void main(String[] args) {
 
-        String pwd = "idiskdsk0&80";
+        Map<String, String> map = new HashMap<>();
+        System.out.println(map.containsKey(null));
 
-        String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,16}$";
+    }
 
-        var pattern = Pattern.compile(regex);
-
-        System.out.println(pattern.matcher(pwd).matches());
-
-        Thread thread = new Thread();
-
+    public enum Demo {
+        MAIL,
+        SMS,
+        SITE,
+        ;
     }
 
 }
