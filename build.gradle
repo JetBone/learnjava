@@ -31,6 +31,7 @@ repositories {
 }
 
 dependencies {
+    // spring boot family
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-cache'
@@ -41,18 +42,29 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+    // mybatis
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.3'
+
+    // swagger
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
 
-    // 驱动
+    // driver
     implementation 'mysql:mysql-connector-java:8.0.26'
-    implementation 'org.apache.commons:commons-text:1.9'
-    implementation 'com.nimbusds:nimbus-jose-jwt:9.9.3'
-    implementation 'javax.mail:mail:1.4.7'
-    implementation 'cn.hutool:hutool-all:5.5.9'
     implementation 'redis.clients:jedis:3.4.1'
+
+    // utils
+    implementation 'org.apache.commons:commons-text:1.9'
+    implementation 'cn.hutool:hutool-all:5.5.9'
+    implementation 'javax.mail:mail:1.4.7'
+
+    // jwt
+    implementation 'com.nimbusds:nimbus-jose-jwt:9.9.3'
+
+    // serializer
     implementation 'com.alibaba:hessian-lite:3.2.11'
     implementation 'com.esotericsoftware:kryo:4.0.2'
+
+    // pdf
     implementation 'com.itextpdf:itextpdf:5.5.13'
     implementation 'com.itextpdf:itext-asian:5.2.0'
     implementation 'org.apache.poi:poi:4.1.2'
@@ -64,6 +76,7 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok:1.18.22'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
 
+    // nifi
     compileOnly 'org.apache.nifi:nifi-api:1.12.1'
 }
 
