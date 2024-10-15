@@ -16,6 +16,13 @@ public interface TreeNode<T extends TreeNode<T>> extends Comparable<TreeNode<T>>
     Long getId();
 
     /**
+     * 获取编号
+     *
+     * @return 编号
+     */
+    String getCode();
+
+    /**
      * 获取排序序号
      * @return 排序序号
      */
@@ -26,6 +33,13 @@ public interface TreeNode<T extends TreeNode<T>> extends Comparable<TreeNode<T>>
      * @return 父ID
      */
     Long getPid();
+
+    /**
+     * 获取编号路径
+     *
+     * @return 路径
+     */
+    String getPath();
 
     /**
      * 获取子树

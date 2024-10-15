@@ -19,15 +19,18 @@ public class TreeNodeDemo implements TreeNode<TreeNodeDemo> {
 
     private Long pid;
 
-    private String name;
+    private String code;
+
+    private String path;
 
     private List<TreeNodeDemo> treeNodes;
 
-    public TreeNodeDemo(Long id, int sortNo, Long pid, String name) {
+    public TreeNodeDemo(Long id, Integer sortNo, Long pid, String code, String path) {
         this.id = id;
         this.sortNo = sortNo;
         this.pid = pid;
-        this.name = name;
+        this.code = code;
+        this.path = path;
     }
 
     @Override
@@ -37,6 +40,6 @@ public class TreeNodeDemo implements TreeNode<TreeNodeDemo> {
 
     @Override
     public TreeNodeDemo copyMySelf() {
-        return new TreeNodeDemo(this.getId(), this.getSortNo(), this.getPid(), this.getName());
+        return new TreeNodeDemo(this.getId(), this.getSortNo(), this.getPid(), this.getCode(), this.getPath());
     }
 }
